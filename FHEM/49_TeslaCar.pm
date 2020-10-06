@@ -271,6 +271,7 @@ sub TeslaCar_UpdateStatus($)
 
         my $odometerChangeAge = gettimeofday() - time_str2num(ReadingsTimestamp($name,"odometer",gettimeofday()));
         my $stateChangeAge    = gettimeofday() - time_str2num(ReadingsTimestamp($name,"state",gettimeofday()));
+	my $ParkingAge	    = gettimeofday() - time_str2num(ReadingsTimestamp($name,"shift_state",gettimeofday()));
 
         Log3 $hash->{NAME}, 4, "$hash->{NAME} is $car->{state}, last odometer change: $odometerChangeAge, last state change $stateChangeAge";
 
@@ -281,9 +282,12 @@ sub TeslaCar_UpdateStatus($)
             (
             $hash->{skipFull} >= $updateTimer ||                   # at least all $updateTimer seconds
               (
-              $odometerChangeAge < (3*$pollingTimer) ||                 # or if speed has changed between the last three polls
-              $stateChangeAge < (3*$pollingTimer) ||                    # or if state has changed between the last three polls
-              ReadingsVal($name,"charging_state","none") eq "Charging"  # or if car is charging
+               #$odometerChangeAge < (18*$pollingTimer) ||                 		# or if speed has changed between the last three polls
+       		$stateChangeAge < (3*$pollingTimer) ||                    		# or if state has changed between the last three polls
+		$ParkingAge < (3*$updateTimer) ||                    			# or if car has been parked the last 30 minutes
+        	ReadingsVal($name,"charging_state","none") eq "Charging" ||  		# or if car is charging
+		ReadingsVal($name,"shift_state","none") ne "P" ||  			# or if car is not in P
+		ReadingsVal($name,"sentry_mode","none") == 1 				# or if car is in sentry mode
               )
             )
           );
