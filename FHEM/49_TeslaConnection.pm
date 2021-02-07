@@ -15,6 +15,7 @@
 
         Use my referral code to get unlimited supercharging for 
         your new Tesla: http://ts.la/stefan1473
+			https://ts.la/timo72139 :-)
 
 =head1 DESCRIPTION
         49_TeslaConnection keeps the logon token needed by devices defined by
@@ -22,6 +23,7 @@
 
 =head1 AUTHOR - Stefan Willmeroth
         swi@willmeroth.com (forum.fhem.de)
+	Forked by Timo Dostal all credits goes to Stefan Willmeroth & mrmops
 =cut
 
 package main;
@@ -42,6 +44,9 @@ sub TeslaConnection_Initialize($)
   $hash->{SetFn}        = "TeslaConnection_Set";
   $hash->{DefFn}        = "TeslaConnection_Define";
   $hash->{GetFn}        = "TeslaConnection_Get";
+  $hash->{AttrList}  	= "AccessToken";
+  
+  $attr{$hash->{NAME}}{AccessToken} = "NeedsToBeDefined" if (!defined $attr{$hash->{NAME}}{AccessToken});
 }
 
 ###################################
@@ -54,17 +59,18 @@ sub TeslaConnection_Set($@)
   my ($gterror, $gotToken) = getKeyValue($hash->{NAME}."_accessToken");
 
   return "no set value specified" if(int(@a) < 2);
-  return "LoginNecessary" if($a[1] eq "?" && !defined($gotToken));
-  return "scanCars login logout refreshToken" if($a[1] eq "?");
+  #return "LoginNecessary" if($a[1] eq "?" && !defined($gotToken));
+  return "scanCars login logout" if($a[1] eq "?");
   if ($a[1] eq "login") {
-    return TeslaConnection_GetAuthToken($hash,$a[2],$a[3]);
+    #return TeslaConnection_GetAuthToken($hash,$a[2],$a[3]);
+    setKeyValue($hash->{NAME}."_accessToken",$attr{$hash->{NAME}}{AccessToken});
+      $hash->{STATE} = "Connected";
+      readingsBeginUpdate($hash);
+      readingsBulkUpdate($hash, "state", $hash->{STATE});
+      readingsEndUpdate($hash, 1);
   }
   if ($a[1] eq "scanCars") {
     TeslaConnection_AutocreateDevices($hash);
-  }
-  if ($a[1] eq "refreshToken") {
-    undef $hash->{expires_at};
-    TeslaConnection_RefreshToken($hash);
   }
   if ($a[1] eq "logout") {
     setKeyValue($hash->{NAME}."_accessToken",undef);
