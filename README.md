@@ -13,6 +13,6 @@ Set Acces Token in:
 
 attr NAME AccessToken
 
-Get AccessToken from PHPSkript see PHP Script for Tesla Homepage:
+Get AccessToken from PHPSkript "PHP Script Tesla Homepage"
 
 Credits goes to https://github.com/timdorr/tesla-api/discussions/283
