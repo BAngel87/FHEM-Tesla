@@ -1,4 +1,11 @@
 # FHEM-Tesla
+
+---------
+
+Bugfix Version for Authentification problem.
+
+---------
+
 Monitor and control your Tesla vehicles in the FHEM smart home environment.
 
 Enter this command in your FHEM command line to install the Tesla plugin:
@@ -23,4 +30,9 @@ Getting AccessToken from PHPSkript "PHPScriptTeslaLogin",
 
 --> GO
 
-Credits goes to https://github.com/timdorr/tesla-api/discussions/283
+Credits goes to:
+https://github.com/timdorr/tesla-api/discussions/283
+
+and
+mrmops:
+https://forum.fhem.de/index.php/topic,74341.165.html
