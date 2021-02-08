@@ -6,6 +6,10 @@ Bugfix Version for Authentification problem.
 
 ---------
 
+CAUTION: You need to set "Login" of Tesa Connection AND "init" at the CAR each time you restart FHEM
+
+---------
+
 Monitor and control your Tesla vehicles in the FHEM smart home environment.
 
 Enter this command in your FHEM command line to install the Tesla plugin:
