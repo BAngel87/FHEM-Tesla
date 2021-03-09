@@ -24,7 +24,7 @@ Set Acces Token in:
 
 attr NAME AccessToken by
 
-Getting AccessToken from PHPSkript "PHPScriptTeslaLogin",
+Getting AccessToken from PHPSkript "PHPScriptTeslaLogin",  PHP Skript not working anymore, getting Token, from e.g. teslafi,....
 
 1. Adding Name and Passwort in last row of script
 2. Run with: php -f PHPScriptTeslaLogin.php 
